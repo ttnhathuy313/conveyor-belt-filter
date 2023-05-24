@@ -2,7 +2,8 @@ import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
 
-def isolate(img, boxes):
+
+def isolate(args, img, boxes):
     """Isolate an object from the background
     boxes: a list of bounding boxes
     """
@@ -11,5 +12,5 @@ def isolate(img, boxes):
     for box in boxes:
         isolated[box[0][1]:box[1][1], box[0][0]:box[1][0]] = img_gray[box[0][1]:box[1][1], box[0][0]:box[1][0]]
     # What is the better threshold value?
-    ret, thresh = cv.threshold(isolated, 210, 255, cv.THRESH_BINARY)
+    ret, thresh = cv.threshold(isolated, args.threshold, 255, cv.THRESH_BINARY)
     return thresh
