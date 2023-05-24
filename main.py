@@ -7,9 +7,10 @@ import isolate
 import speed_infer
 import time
 import argparse
+import identify_color
 from kalman_filter import KalmanFilter
 
-# to run realtime, call python main.py --realtime 1
+# to run realtime, call python main.py --realtime 1 --hístogram 0
 # otherwise, for testing just call python main.py
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('--debug', type=int, default=0,
@@ -41,8 +42,11 @@ while (True):
     ret, frame = cap.read()
     if ret == True:
         frame_roi = roi.get_roi(frame)
-        detected, bounding_boxes = segmentate.segmentate(args, frame_roi)
+        detected, bounding_boxes = segmentate.segmentate(args, frame_roi.copy())
         isolated = isolate.isolate(args, frame_roi, bounding_boxes)
+        colors = identify_color.detect_color(args, frame_roi, bounding_boxes)
+        for (box, color) in zip(bounding_boxes, colors):
+            cv.putText(detected, color, box[0], cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, cv.LINE_AA)
         
         cur_time = time.time()
         time_elapsed = cur_time - prev_time
