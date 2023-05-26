@@ -51,7 +51,8 @@ while (True):
         cur_time = time.time()
         time_elapsed = cur_time - prev_time
         if (args.realtime == 0):
-            time_elapsed = 1.0/32.0
+            # the video is 64 fps
+            time_elapsed = 1.0/64.0
         # speed = speed_infer.get_speed(bounding_boxes, previous_bounding_boxes, cur_time - prev_time)
         # speed = speed_infer.get_speed_isolated(isolated, previous_isolated, time_elapsed, debug=debug)
         speed = speed_infer.optical_flow(frame_roi, prev_frame_roi, \
